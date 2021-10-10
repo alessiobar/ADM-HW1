@@ -410,24 +410,644 @@ for x in range(n):
     if not arr1.issubset(arr):
         print(False)
         break
-   
+
+
+################################################################# Collections
+
+#collections.Counter()
+n, arr, n1 = int(input()), list(map(int, input().split())), int(input())
+rev = 0
+for x in range(n1):
+    j,k = list(map(int, input().split()))
+    if j in arr:
+        arr.remove(j)
+        rev+=k
+print(rev)
+
+#DefaultDict Tutorial
+from collections import defaultdict
+n, m = list(map(int, input().split()))
+a, b = [input() for x in range(n)], [input() for x in range(m)]
+for x in b:
+    s=""
+    for y in range(len(a)):
+        if x==a[y]:
+            s+=str(y+1) + " "
+    if s=="":
+        s="-1"       
+    print(s)        
+
+#Collections.namedtuple()
+from collections import namedtuple
+n, cols = int(input()), list(map(str, input().split()))
+uff = [x for x in range(len(cols)) if cols[x]=="MARKS"]
+grades=0
+for x in range(n):
+    grades+= int(list(map(str, input().split()))[uff[0]]) 
+print(round(grades/n,2))
+
+#Collections.OrderedDict()
+from collections import OrderedDict
+n = int(input())
+d = {}
+for x in range(n):
+    s = input()
+    q = s.split()[-1]
+    s=s[:-len(q)] 
+    if s not in list(d.keys()):
+        d[s]=0    
+    d[s] += int(q)    
+for x in d:
+    print(x + str(d[x]))
+
+#Word Order
+n = int(input())
+l = [input() for x in range(n)]
+print(len(set(l)))
+d=dict.fromkeys(l,0)
+for x in l:
+    d[x]+=1
+s=""
+for x in d.values():
+    s+=str(x) + " "  
+print(s)
+
+#Collections.deque()
+from collections import deque
+n = int(input())
+d=deque()
+for x in range(n):
+    cmd = input().split()    
+    if cmd[0]=="append":
+        d.append(cmd[1])    
+    elif cmd[0]=="appendleft":
+        d.appendleft(cmd[1])    
+    elif cmd[0]=="popleft":
+        d.popleft()    
+    elif cmd[0]=="pop":
+        d.pop()
+s=""
+for x in d:
+   s+=str(x) + " " 
+print(s)
+
+#Company Logo
+#!/bin/python3
+import math, os, random, re, sys
+import collections
+from operator import itemgetter
+if __name__ == '__main__':
+    s = input()
+    l = [x for x in s]
+    d = dict.fromkeys(l, 0)
+    for x in l:
+        d[x]+=1    
+    a=sorted([(list(d.values())[x],list(d.keys())[x]) for x in range(len(list(d)))], key = itemgetter(0), reverse=True )  
+    count = 0
+    for x in range(len(a)):
+        if count==2:
+            try:
+                while a[count][0]==a[count+1][0]:
+                    count+=1
+            except Exception:    
+                pass
+            count+=1
+            break
+        else:
+            count+=1
+    a=a[:count]    
+    if len(set([str(x[0]) for x in a]))==1: #tutti stessi numeri, lett diverse
+        a = sorted(a, key = itemgetter(1))[:3]
+        tot=a    
+    elif len(set([str(x[0]) for x in a]))==2:
+        fs, sc = [x[1] for x in a if x[0]==max([x[0] for x in a])], [x[1] for x in a if x[0]==min([x[0] for x in a])]       
+        fs.sort()
+        fs = [(max([x[0] for x in a]),fs[x]) for x in range(len(fs))]
+        sc.sort()
+        sc = [(min([x[0] for x in a]),sc[x]) for x in range(len(sc))]
+        tot = fs + sc
+        tot = tot[:3]                
+    elif len(set([str(x[0]) for x in a]))==3: 
+        fs, md, sc = [x[1] for x in a if x[0]==max([x[0] for x in a])], [x[1] for x in a if x[0]!=max([x[0] for x in a]) and x[0]!=min([x[0] for x in a])], [x[1] for x in a if x[0]==min([x[0] for x in a])]         
+        fs.sort()
+        fs = [(max([x[0] for x in a]),fs[x]) for x in range(len(fs))]
+        sc.sort()
+        sc = [(min([x[0] for x in a]),sc[x]) for x in range(len(sc))]
+        md.sort()
+        l=[x[0] for x in a]
+        l.remove(min([x[0] for x in a]))
+        l.remove(max([x[0] for x in a]))
+        l=l[0]
+        md = [(l,md[x]) for x in range(len(md))]  
+        tot = fs + md +sc
+        tot = tot[:3]       
+a=tot      
+for x in range(len(a)):
+    print(str(a[x][1])+ " " + str(a[x][0]))
+
+#Piling Up! 
+'''
+I had problems debugging my code, because the console was not able to FIT large datasets, neither the ones provided by HackerRank itself.
+Thus i wasn't able to see if my previous code had Memory Errors, Runtime Errors or provided just Wrong Answers.
+This was my previous code:
+t = int(input())
+for x in range(t):
+    n, s = int(input()), list(map(int, input().split())) 
+    for iStop in range(len(s)-1):
+        if s[iStop] <= s[iStop+1]:
+            break
+    s=s[iStop+1:]
+    for jStop in range(len(s)-1, -1, -1):
+        if s[jStop] <= s[jStop-1]:
+            break
+    s=s[:jStop]
+    if len(s)==0:
+        print("Yes")
+    else:
+        print("No") 
+Looking up online i came up with this very logical way of assessing the problem (the one below), that made me think that cutting my very large list with "s=s[:jStop]"
+twice might have raised a MemoryError that althogh i was not able to receive for the problem stated above.
+'''
+t = int(input())
+for x in range(t):
+    n, s = int(input()), list(map(int, input().split())) 
+    cc = 0
+    while cc < len(s) - 1 and s[cc] >= s[cc + 1]:
+        cc+=1    
+    while cc < len(s) - 1 and s[cc] <= s[cc + 1]:
+        cc += 1
+    if cc==len(s)-1:
+        print("Yes")    
+    else:
+        print("No")
+
+        
 
 
 
-################################################################# 
-#################################################################
-#################################################################
-#################################################################
-#################################################################
-#################################################################
-#################################################################
-#################################################################
-#################################################################
-#################################################################
+################################################################# Date and Time
+
+#Calendar Module
+import calendar
+a = list(map(int, input().split()))
+days = {"0":"MONDAY","1":"TUESDAY","2":"WEDNESDAY","3":"THURSDAY","4":"FRIDAY","5":"SATURDAY","6":"SUNDAY",}
+print(days[str(calendar.weekday(a[2],a[0],a[1]))])
+
+#Time Delta
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+import datetime
+
+# Complete the time_delta function below.
+def time_delta(t1, t2):
+    delta = abs(datetime.datetime.strptime(t1, "%a %d %b %Y %H:%M:%S %z") - datetime.datetime.strptime(t2, "%a %d %b %Y %H:%M:%S %z"))
+    return str(delta.total_seconds())[:-2]
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    t = int(input())
+    for t_itr in range(t):
+        t1 = input()
+        t2 = input()
+        delta = time_delta(t1, t2)
+        fptr.write(delta + '\n')
+    fptr.close()
 
 
 
+################################################################# Errors and Exceptions
 
+#Exceptions
+n = int(input())
+for x in range(n):
+    a, b = input().split()
+    try:
+        print(int(a)//int(b))
+    except ValueError as e:
+        print ("Error Code:",  e)
+    except ZeroDivisionError as e:
+        print ("Error Code:",  e)
+
+################################################################# Built-Ins
+
+#Zipped!
+n, m = list(map(int, input().split()))
+lists= [input().split() for x in range(m)]
+for x in range(len(lists)):
+    lists[x] = [float(y) for y in lists[x]]
+a = [x for x in zip(*lists)]
+for x in a:
+    print(float(sum(x)/m))
+
+#Athlete Sort
+import math, os, random, re, sys
+from operator import itemgetter
+if __name__ == '__main__':
+    nm = input().split()
+    n = int(nm[0])
+    m = int(nm[1])
+    arr = []
+    for _ in range(n):
+        arr.append(list(map(int, input().rstrip().split())))
+    k = int(input())
+    arr = sorted(arr, key=itemgetter(k))
+    for l in arr:
+        print(*l, sep = " ") 
+
+#ginortS
+s = input()
+nums = [int(x) for x in s if x.isnumeric()]
+even, odd = sorted([x for x in nums if x%2==0]), sorted([x for x in nums if x%2!=0])
+print(
+    ''.join(sorted([x for x in s if x.islower()]))+
+    ''.join(sorted([x for x in s if x.isupper()]))+
+    ''.join([str(x) for x in odd])+
+    ''.join([str(x) for x in even])
+)
+
+
+################################################################# Python Functionals 
+
+#Map and Lambda Function
+cube = lambda x: x**3
+def fibonacci(n):
+    if n==0:
+        return []
+    if n==1:
+        return [0]
+    if n ==2:
+        return [0, 1]    
+    v = [0] * n
+    v[1], v[2] = 1, 1
+    for j in range(3,n):
+        v[j] = v[j-1] + v[j-2]
+    return v
+
+
+################################################################# Regex and Parsing
+
+#Detect Floating Point Number
+n = int(input())
+for x in range(n):
+    m = input()
+    try:
+        float(m)
+        if "." in [x for x in m]:
+            print(True)
+        else:
+            print(False)    
+    except Exception:
+        print(False)
+
+#Re.split()
+regex_pattern = r"[,.]"
+
+#Group(), Groups() & Groupdict()
+import re
+s = re.sub("[^a-zA-Z\d\s:]","#",input())
+ctrl = True
+for x in range(len(s)):
+    if x!=len(s)-1 and s[x]!="#":
+        if s[x+1]==s[x]:
+            print(s[x])
+            ctrl = False
+            break
+if ctrl:
+    print(-1)
+
+#Re.findall() & Re.finditer()
+import re
+vowels = ["A","E","I","O","U",]
+consonants = "QWRTYPSDFGHJKLZXCVBNM"
+s = input()
+fin = []
+subS = ""
+for x in range(len(s)):
+    if s[x].upper() in vowels:
+        if len(subS)>=1:
+            subS+=s[x]
+        elif x!=0:
+            if s[x-1].upper() in consonants:
+                subS+=s[x]            
+    else:
+        if len(subS)>1:
+            if x!=len(s)-1:
+                if s[x].upper() in consonants:
+                    fin.append(subS)
+                    subS=""
+                else:
+                    subS=""
+            elif x==len(s)-1:
+               if s[x].upper() in consonants:
+                    fin.append(subS)
+                    subS=""
+               else:
+                    subS=""   
+        else:
+            subS=""  
+if len(fin)>0:
+    for x in fin:
+        print(x)
+else:
+    print(-1)
+
+#Re.start() & Re.end()
+import re
+ctrl=True
+s, k = input(), input()
+for x in range(len(s)):
+    if s[x:x+len(k)] == k:
+        print((x,x+len(k)-1))
+        ctrl=False   
+if ctrl:
+    print((-1,-1))
+ 
+#Regex Substitution
+import re
+for x in range(int(input())):
+    s = input()
+    if len(s)>0:
+        s = re.sub(" ","  ",s)
+        s = re.sub(" \\&\\& "," and ",s)
+        s = re.sub(" \\|\\| "," or ",s)
+        s = re.sub('  '," ",s)
+        print(s)
+        continue
+    print(s)
+
+#Validating Roman Numerals
+'''Seeked for some help on stack overflow and some cheat sheets for the RegEx Syntax'''
+import re
+thousand = 'M{0,3}'
+hundred = '(C[MD]|D?C{0,3})'
+decine = '(X[CL]|L?X{0,3})'
+unita = '(I[VX]|V?I{0,3})'
+regex_pattern = thousand+hundred+decine+unita +"$"
+
+
+#Validating phone numbers
+import re
+n = int(input())
+for x in range(n):
+    try:
+        a=re.match(r'^[7,8,9]\d{9}$', input()).group(0)
+        print("YES")
+    except:
+        print("NO")
+
+#Validating and Parsing Email Addresses
+import re
+n=int(input())
+for x in range(n):
+    n, e = input().split()
+    try:
+        b=re.match('<[A-Za-z](\w|-|\.|_)+@[A-Za-z]+\.[A-Za-z]{1,3}>', e).group(0)
+        print(n + " " + b)
+    except AttributeError:
+        pass
+    
+#Hex Color Code
+import re
+n = int(input())
+openBracket = False
+for x in range(n):
+    s = re.sub("[;,():]"," ", input()).split()
+    if openBracket: 
+        for y in s:
+            a=re.match("^#([A-fa-f0-9]{3}|[A-fa-f0-9]{6})$",y) 
+            if a!=None:
+                print(a.group(0))    
+    try:                    
+        if "{" in s:
+            openBracket=True        
+        if "}" in s:
+            openBracket=False            
+    except Exception:
+        pass
+
+#HTML Parser - Part 1
+from html.parser import HTMLParser
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        print("Start :", tag)
+        for x in attrs:
+            print("->", x[0], ">", x[1])
+    def handle_endtag(self, tag):
+        print("End   :", tag)
+    def handle_startendtag(self, tag, attrs):
+        print("Empty :", tag)
+        for x in attrs:
+            print("->", x[0], ">", x[1])  
+parser = MyHTMLParser() 
+n = int(input())
+for x in range(n):
+    s = input()
+    parser.feed(s)
+
+#HTML Parser - Part 2
+from html.parser import HTMLParser
+import re
+class MyHTMLParser(HTMLParser):
+    def handle_comment(self, data):
+        if "\n" in data:
+             print(">>> Multi-line Comment")
+             print(data)
+        else:
+             print(">>> Single-line Comment")
+             print(data)    
+    def handle_data(self, data):
+        if len(re.sub("\n","",data))>0:
+            print(">>> Data")
+            print(data)
+html = ""       
+for i in range(int(input())):
+    html += input().rstrip()
+    html += '\n'   
+parser = MyHTMLParser()
+parser.feed(html)
+parser.close()
+
+#Detect HTML Tags, Attributes and Attribute Values
+n = int(input())
+import re
+from html.parser import HTMLParser
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        print(tag)
+        for x in attrs:
+            print("->", x[0], ">", x[1])
+parser = MyHTMLParser()           
+for x in range(n):
+    s = input()
+    parser.feed(s)
+
+#Validating UID
+import re
+n = int(input())
+for _ in range(n):
+    s = input()
+    if len(s)!=10:
+        print("Invalid")
+    else:
+        cc=0
+        if re.search(r"([A-z].*){2}", s):
+            cc+=1
+        if re.search(r"([0-9].*){3}", s):
+            cc+=1
+        if re.search(r"[A-Za-z0-9]{10}", s):
+            cc+=1
+        if len(set([x for x in s]))==10:
+            cc+=1
+        if cc==4:
+            print("Valid")
+        if cc!=4:
+            print("Invalid")
+        cc=0
+
+#Validating Credit Card Numbers
+import re
+for _ in range(int(input())):
+    c = input()
+    if isinstance(re.match(r"^[4-6]",c), type(None)):
+        print("Invalid")
+        continue
+    if isinstance(re.match(r'^[0-9]{16}$', re.sub("-","",c)), type(None)):
+        print("Invalid")
+        continue 
+    if isinstance(re.match("^[0-9-]*$", c), type(None)):
+        print("Invalid")
+        continue
+    if isinstance(re.match(r"^([0-9]{16})|([0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4})$", c), type(None)):
+        print("Invalid")
+        continue
+    c=re.sub("-","",c)    
+    ctl=True
+    for i in range(0,16-3):    
+        if c[i]==c[i+1]==c[i+2]==c[i+3]:
+            print("Invalid")
+            ctl=False
+            break
+    if ctl:
+        print("Valid")
+    
+#Validating Postal Codes
+regex_integer_in_range = r"^[100000-999999]{6}$"
+regex_alternating_repetitive_digit_pair = r"(?=(0.0))|(?=(1.1))|(?=(2.2))|(?=(3.3))|(?=(4.4))|(?=(5.5))|(?=(6.6))|(?=(7.7))|(?=(8.8))|(?=(9.9))"
+
+#Matrix Script
+import math, os, random, re, sys
+first_multiple_input = input().rstrip().split()
+n = int(first_multiple_input[0])
+m = int(first_multiple_input[1])
+matrix = []
+for _ in range(n):
+    matrix_item = input()
+    matrix.append(matrix_item)
+s = "".join(["".join(x) for x in list(map(list, zip(*[[y for y in x] for x in matrix])))])
+print(re.sub(r"(?<=([\w\d]))([ !@#$%&]{1,10000})(?=([\w\d]))"," ", s))
+        
+################################################################# XML
+
+#XML 1 - Find the Score
+def get_attr_number(node):
+    s = [len(x.attrib) for x in root.iter()]
+    return str(sum(s))
+
+#XML2 - Find the Maximum Depth
+maxdepth = 0
+def depth(elem, level):
+    global maxdepth
+    level+=1
+    if level>=maxdepth:
+        maxdepth=level
+    for x in elem:
+        depth(x, level)
+
+################################################################# Closures and Decorations 
+
+#Standardize Mobile Number Using Decorators
+def wrapper(f):
+    def fun(l):
+        ll=[]
+        for x in l:
+            if len(x)==10:
+                ll.append("+91 {} {}".format(x[:5],x[5:]))
+            elif len(x)==12:
+                ll.append("+91 {} {}".format(x[-10:-5],x[-5:]))
+            elif len(x)==11:
+                ll.append("+91 {} {}".format(x[1:6],x[6:])) 
+            elif len(x)==13:
+                ll.append("+91 {} {}".format(x[-10:-5],x[-5:]))                
+        ll.sort()        
+        for x in ll:
+            print(x)                                    
+    return fun
+
+#Decorators 2 - Name Directory
+from operator import itemgetter
+def person_lister(f):
+    def inner(people):
+        out= []
+        for x in range(len(people)):
+            people[x][2] = int(people[x][2])
+        for x in sorted(people, key = itemgetter(2)):
+            if x[-1] == "M":
+                out.append("Mr. {} {}".format(x[0],x[1]))
+            elif x[-1] == "F":
+                out.append("Ms. {} {}".format(x[0],x[1]))
+        return out            
+    return inner
+
+################################################################# Numpy
+
+#Arrays
+def arrays(arr):
+    arr = numpy.array(arr)[::-1].astype(float)
+    return arr
+
+#Shape and Reshape
+import numpy as np
+print(np.reshape(np.array([int(x) for x in input().split()]), (3,3)))
+
+#Transpose and Flatten
+import numpy as np
+n, m = list(map(int, input().split()))
+arr = np.array([list(map(int, input().split())) for x in range(n)])
+print(np.transpose(arr))
+print(arr.flatten())
+
+#Concatenate
+import numpy as np
+n, m, p = list(map(int, input().split()))
+print(np.array([list(map(int, input().split())) for x in range(n+m)]))
+
+#Zeros and Ones
+import numpy as np
+d = tuple(map(int, input().split()))
+print(np.array(np.zeros(d, dtype = np.int)))
+print(np.array(np.ones(d, dtype = np.int)))
+
+#Eye and Identity
+import numpy as np
+np.set_printoptions(legacy="1.13")
+n,m = list(map(int, input().split()))
+print(np.eye(n, m))
+
+#Array Mathematics
+import numpy as np
+n, m = list(map(int, input().split()))
+a = np.array([list(map(int, input().split())) for x in range(n)], int)
+b =  np.array([list(map(int, input().split())) for x in range(n)], int)
+print(np.add(a,b))
+print(np.subtract(a,b))
+print(np.multiply(a,b))
+print(a//b)
+print(np.mod(a,b))
+print(np.power(a,b))
 
 
 
