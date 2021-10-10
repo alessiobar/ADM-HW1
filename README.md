@@ -1,4 +1,9 @@
 # ADM-HW1
 
+In this Repository you can find the solutions to Exercises 1 and 2 of Homework 1.
 
-RICORDATI CHE NON PUOI CAMBIARE IL NOME DELLA REPO "ADM-HW1" (IN REALTà CON SPAZIO), SENNò CAMBIA IL LINK CHE GLI HAI MANDATO NEL FORM DI GOOGLE
+"Script.py" contains the code for both problems, one below the other.
+
+"HackerRankSubmissions.pdf" contains the screenshots of the HackerRank's Submissions page.
+
+Alessio Barboni 
