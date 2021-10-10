@@ -29,7 +29,7 @@ if __name__ == '__main__':
     print(a-b)
     print(a*b)
   
- #Python: Division
+#Python: Division
 from __future__ import division
 if __name__ == '__main__':
     a = int(raw_input())
@@ -411,7 +411,6 @@ for x in range(n):
         print(False)
         break
 
-
 ################################################################# Collections
 
 #collections.Counter()
@@ -492,7 +491,6 @@ for x in d:
 print(s)
 
 #Company Logo
-#!/bin/python3
 import math, os, random, re, sys
 import collections
 from operator import itemgetter
@@ -581,10 +579,6 @@ for x in range(t):
     else:
         print("No")
 
-        
-
-
-
 ################################################################# Date and Time
 
 #Calendar Module
@@ -594,16 +588,7 @@ days = {"0":"MONDAY","1":"TUESDAY","2":"WEDNESDAY","3":"THURSDAY","4":"FRIDAY","
 print(days[str(calendar.weekday(a[2],a[0],a[1]))])
 
 #Time Delta
-#!/bin/python3
-
-import math
-import os
-import random
-import re
-import sys
-import datetime
-
-# Complete the time_delta function below.
+import math, os, random. re, sys, datetime
 def time_delta(t1, t2):
     delta = abs(datetime.datetime.strptime(t1, "%a %d %b %Y %H:%M:%S %z") - datetime.datetime.strptime(t2, "%a %d %b %Y %H:%M:%S %z"))
     return str(delta.total_seconds())[:-2]
@@ -616,8 +601,6 @@ if __name__ == '__main__':
         delta = time_delta(t1, t2)
         fptr.write(delta + '\n')
     fptr.close()
-
-
 
 ################################################################# Errors and Exceptions
 
@@ -669,7 +652,6 @@ print(
     ''.join([str(x) for x in even])
 )
 
-
 ################################################################# Python Functionals 
 
 #Map and Lambda Function
@@ -686,7 +668,6 @@ def fibonacci(n):
     for j in range(3,n):
         v[j] = v[j-1] + v[j-2]
     return v
-
 
 ################################################################# Regex and Parsing
 
@@ -1104,6 +1085,7 @@ print(round(np.linalg.det(arr), 2))
 '''
 SOLUTIONS TO "PROBLEM 2" EXCERCISES
 '''
+
 #Birthday Cake Candles
 import math, os, random, re, sys
 def birthdayCakeCandles(candles):
