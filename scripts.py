@@ -1049,23 +1049,175 @@ print(a//b)
 print(np.mod(a,b))
 print(np.power(a,b))
 
+#Floor, Ceil and Rint
+import numpy as np
+np.set_printoptions(sign=' ')
+arr = np.array([x for x in input().split()], float)
+print(np.floor(arr))
+print(np.ceil(arr))
+print(np.rint(arr))
+
+#Sum and Prod
+import numpy as np
+n, m = list(map(int, input().split()))
+arr = np.array([input().split() for x in range(n)], int)
+print(np.prod(np.sum(arr, axis =0)))
+
+#Min and Max
+import numpy as np
+n, m = list(map(int, input().split()))
+arr=np.array([input().split() for _ in range(n)], int)
+print(np.max(np.min(arr, axis=1)))
+
+#Mean, Var, and Std
+import numpy as np
+n, m = list(map(int, input().split()))
+arr = np.array([input().split() for _ in range(n)], int)
+print(np.mean(arr, axis=1))
+print(np.var(arr, axis=0))
+print(np.around(np.std(arr, axis=None), 11))
+
+#Dot and Cross
+import numpy as np
+n = int(input())
+a, b = np.array([input().split() for _ in range(n)], int), np.array([input().split() for _ in range(n)], int)
+print(np.dot(a,b))
+
+#Inner and Outer
+import numpy as np
+a, b = np.array([input().split() for _ in range(2)], int)
+print(np.inner(a, b))
+print(np.outer(a,b))
+
+#Polynomials
+import numpy as np
+arr, p = np.array(list(map(float, input().split()))), int(input())
+print(np.polyval(arr, p))
+
+#Linear Algebra
+import numpy as np
+n = int(input())
+arr = np.array([list(map(float, input().split())) for _ in range(n)])
+print(round(np.linalg.det(arr), 2))
 
 
+'''
+SOLUTIONS TO "PROBLEM 2" EXCERCISES
+'''
+#Birthday Cake Candles
+import math, os, random, re, sys
+def birthdayCakeCandles(candles):
+    return candles.count(max(candles))  
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    candles_count = int(input().strip())
+    candles = list(map(int, input().rstrip().split()))
+    result = birthdayCakeCandles(candles)
+    fptr.write(str(result) + '\n')
+    fptr.close()
 
+#Kangaroo/Number Line Jumps
+import math, os, random, re, sys
+def kangaroo(x1, v1, x2, v2):
+    if x1==x2:
+        return "YES"
+    if v1==v2 and x1!=x2:
+        return "NO"    
+    if v1>v2 and x1>x2 or v1<v2 and x1<x2:
+        return "NO"       
+    for x in range(1,1000000):
+        x1 += v1
+        x2 += v2
+        if x1 == x2:
+            return "YES"    
+    return "NO"      
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    first_multiple_input = input().rstrip().split()
+    x1 = int(first_multiple_input[0])
+    v1 = int(first_multiple_input[1])
+    x2 = int(first_multiple_input[2])
+    v2 = int(first_multiple_input[3])
+    result = kangaroo(x1, v1, x2, v2)
+    fptr.write(result + '\n')
+    fptr.close()
 
+#Strange Advertising/Viral Advertising
+import math, os, random, re, sys
+def viralAdvertising(n): 
+    c = 0
+    recipients = 5
+    for _ in range(n):
+        c += math.floor(recipients/2)
+        recipients = 3 * math.floor(recipients/2)
+    return(c)
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    n = int(input().strip())
+    result = viralAdvertising(n)
+    fptr.write(str(result) + '\n')
+    fptr.close()
 
+#Recursive Digit Sum
+import math, os, random, re, sys
+def superDigit(n, k):
+    p=0
+    for x in range(len(n)):
+       p+=int(n[x]) 
+    while len(str(p))!=1:
+        a = 0
+        for x in range(len(str(p))):
+            a+=int(str(p)[x])
+        p = a
+    return p        
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    first_multiple_input = input().rstrip().split()
+    n = first_multiple_input[0]
+    k = int(first_multiple_input[1])
+    result = superDigit(n, k)
+    fptr.write(str(result) + '\n')
+    fptr.close()
 
+#Insertion Sort - Part 1
+import math, os, random, re, sys
+def insertionSort1(n, arr):
+    e, arr = arr[-1], arr[:-1]
+    p=0
+    for x in range(len(arr)-1,-1,-1): 
+        if arr[x]>e:
+            arr.insert(x, arr[x])
+            print(*arr, sep=" ")
+            arr.remove(arr[x])
+            p+=1
+        elif arr[x]<=e:
+            arr.insert(x+1, e) 
+            print(*arr, sep=" ")   
+            return None     
+    if p==n-1:
+        arr.insert(0, e)
+        print(*arr, sep=" ")       
+if __name__ == '__main__':
+    n = int(input().strip())
+    arr = list(map(int, input().rstrip().split()))
+    insertionSort1(n, arr)
 
+#Insertion Sort - Part 2
+import math, os, random, re, sys
+def insertionSort2(n, arr):
+    l, arr, i = [arr[0]], arr[1:], 0
+    for x in range(len(arr)):
+        while arr[x] > l[i]:
+            if len(l)==i+1:
+                i+=1
+                break
+            i+=1
+        l.insert(i, arr[x])
+        print(*l+arr[x+1:], sep=" ")
+        i=0 
+if __name__ == '__main__':
+    n = int(input().strip())
+    arr = list(map(int, input().rstrip().split()))
+    insertionSort2(n, arr)
 
-
-
-
-
-
-
-
-
-
-
-    
-
+#End
